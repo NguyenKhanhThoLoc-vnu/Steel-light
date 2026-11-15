@@ -19,6 +19,8 @@
 //    music        background music for this beat only (most beats have none, on purpose):
 //                 wonder, space, adventure, triumph, sad, tense, lullaby, game (src/audio/sound.js)
 //    subsBox      'side' = subtitles in a small chat bubble at the bottom left (this beat only)
+//    narrator     true = told by a storyteller, not by Oppy (from the long sleep to the end):
+//                 another voice reads it, the subtitle box says NARRATOR, Oppy does not "talk"
 //    photo        key from photos.js
 //
 //  Rover moods: normal, happy, proud, excited, curious, sad, worried, scared, sleepy, sleep, tired,
@@ -641,8 +643,10 @@ export const chapters = [
       },
       {
         music: 'sad',
-        en: 'For months, my team called to me again and again, more than a thousand times. But I was in a deep, deep sleep, and I could not answer.',
-        vi: 'Suốt nhiều tháng, đội ngũ của tôi gọi tôi hết lần này đến lần khác, hơn một nghìn lần. Nhưng tôi đã chìm vào giấc ngủ sâu, rất sâu, và không thể trả lời.',
+        // from here to the end, a storyteller speaks: Oppy is asleep. CALL_MESSAGES float around.
+        narrator: true,
+        en: 'For months, the team on Earth called Oppy again and again, more than a thousand times. Every day they listened, and hoped. But Oppy was in a deep, deep sleep, and could not answer.',
+        vi: 'Suốt nhiều tháng, đội ngũ trên Trái Đất gọi Oppy hết lần này đến lần khác, hơn một nghìn lần. Ngày nào họ cũng lắng nghe và hy vọng. Nhưng Oppy đã chìm vào giấc ngủ sâu, rất sâu, và không thể trả lời.',
         set: { beam: false, calls: true, storm: false },
         cine: { bars: true },
         hud: { date: 'Jun 2018 – Feb 2019', power: 0 },
@@ -657,39 +661,61 @@ export const chapters = [
     scene: 'finale',
     beats: [
       {
-        en: 'In February 2019, NASA announced that my mission was complete. My job was done.',
-        vi: 'Tháng 2 năm 2019, NASA tuyên bố nhiệm vụ của tôi đã hoàn thành. Công việc của tôi đã xong.',
+        narrator: true,
+        en: "On the last night, the team played Oppy one final wake-up song: I'll Be Seeing You. The next day, February 13th, 2019, NASA announced that Opportunity's mission was complete.",
+        vi: 'Đêm cuối cùng, đội ngũ gửi tới Oppy bài hát đánh thức sau cùng: "I\'ll Be Seeing You" (Hẹn ngày gặp lại). Ngày hôm sau, 13 tháng 2 năm 2019, NASA tuyên bố nhiệm vụ của Opportunity đã hoàn thành.',
         rover: { x: 20, mood: 'sleep' },
         hud: { date: 'Feb 13, 2019', km: 45.16, power: 0 },
       },
       {
-        en: 'They planned for 90 days. I worked for almost 15 years, about 60 times longer. They hoped I would drive one kilometer. I drove 45.16 kilometers!',
-        vi: 'Người ta dự tính tôi hoạt động 90 ngày. Tôi đã làm việc gần 15 năm, lâu hơn khoảng 60 lần. Người ta mong tôi đi được 1 ki-lô-mét. Tôi đã đi được 45,16 ki-lô-mét!',
+        narrator: true,
+        en: 'The team had planned for 90 days. Oppy worked for almost 15 years, about 60 times longer. They hoped the little rover would drive one kilometer. Oppy drove 45.16 kilometers!',
+        vi: 'Đội ngũ dự tính Oppy hoạt động 90 ngày. Oppy đã làm việc gần 15 năm, lâu hơn khoảng 60 lần. Họ mong chú robot nhỏ đi được 1 ki-lô-mét. Oppy đã đi được 45,16 ki-lô-mét!',
         set: { stats: 'compare' },
         photo: 'final-traverse-map',
       },
       {
-        en: 'I found blueberries, gypsum veins and gentle clays. I visited Eagle, Endurance, Victoria and Endeavour, and found a meteorite. Together, they told us Mars was once wet, and may once have supported tiny life.',
-        vi: 'Tôi đã tìm thấy "việt quất", mạch thạch cao và đất sét dịu nhẹ. Tôi đã ghé thăm Eagle, Endurance, Victoria và Endeavour, và tìm thấy một thiên thạch. Tất cả cho thấy sao Hỏa từng có nước, và có thể đã từng duy trì sự sống nhỏ bé.',
+        narrator: true,
+        en: 'Oppy found blueberries, gypsum veins and gentle clays, visited Eagle, Endurance, Victoria and Endeavour, and even found a meteorite. Together, these clues told us that Mars was once wet, and may once have supported tiny life.',
+        vi: 'Oppy đã tìm thấy "việt quất", mạch thạch cao và đất sét dịu nhẹ, ghé thăm Eagle, Endurance, Victoria và Endeavour, và còn tìm thấy một thiên thạch. Tất cả những manh mối ấy cho thấy sao Hỏa từng có nước, và có thể đã từng duy trì sự sống nhỏ bé.',
         set: { stats: 'discoveries' },
       },
       {
         music: 'triumph',
-        en: 'For twelve years, I held the record for the longest drive on another world. In October 2026, a younger rover named Perseverance finally drove farther. I am so proud. Keep going, little one!',
-        vi: 'Suốt mười hai năm, tôi giữ kỷ lục quãng đường dài nhất từng được lái trên một thế giới khác. Tháng 10 năm 2026, một rover trẻ hơn tên là Perseverance cuối cùng đã đi xa hơn tôi. Tôi tự hào lắm. Cố lên nhé, em nhỏ!',
+        narrator: true,
+        en: 'For twelve years, Oppy held the record for the longest drive on another world. In October 2026, a younger rover named Perseverance finally drove farther. Oppy would be so proud. Keep going, little one!',
+        vi: 'Suốt mười hai năm, Oppy giữ kỷ lục quãng đường dài nhất từng được lái trên một thế giới khác. Tháng 10 năm 2026, một rover trẻ hơn tên là Perseverance cuối cùng đã đi xa hơn. Hẳn Oppy sẽ tự hào lắm. Cố lên nhé, em nhỏ!',
         set: { stats: 'record' },
         hud: { date: 'Oct 2026' },
       },
       {
         music: 'wonder',
-        en: 'Now I rest in Perseverance Valley, under the Martian stars. But my story is not over. It lives on in every explorer who refuses to give up. Maybe... in you.',
-        vi: 'Giờ đây tôi yên nghỉ ở Thung lũng Perseverance, dưới bầu trời sao của sao Hỏa. Nhưng câu chuyện của tôi chưa kết thúc. Nó tiếp tục sống trong mỗi nhà thám hiểm không bao giờ bỏ cuộc. Có lẽ... là trong bạn.',
+        narrator: true,
+        en: "Today, Oppy rests in Perseverance Valley, under the Martian stars. But Oppy's story is not over. It lives on in every explorer who refuses to give up. Maybe... in you.",
+        vi: 'Giờ đây Oppy yên nghỉ ở Thung lũng Perseverance, dưới bầu trời sao của sao Hỏa. Nhưng câu chuyện của Oppy chưa kết thúc. Nó tiếp tục sống trong mỗi nhà thám hiểm không bao giờ bỏ cuộc. Có lẽ... là trong bạn.',
         rover: { mood: 'happy' },
         set: { stats: null, shooting: true },
         hud: { date: 'Today' },
       },
     ],
   },
+];
+
+// Radio messages from Earth that float around the sleeping rover (set.calls, chapter 10).
+// 6 places on screen, 2 messages take turns in each place (order: place 1..6, then again).
+export const CALL_MESSAGES = [
+  { en: 'Opportunity, can you hear us?', vi: 'Opportunity ơi, bạn có nghe thấy không?' },
+  { en: 'We miss you, Oppy.', vi: 'Chúng tôi nhớ bạn lắm, Oppy.' },
+  { en: 'The storm is over. The Sun is back!', vi: 'Bão tan rồi. Mặt Trời đã trở lại!' },
+  { en: 'Please call home.', vi: 'Hãy gọi về nhà nhé.' },
+  { en: 'Wake up, little rover!', vi: 'Dậy đi nào, robot nhỏ!' },
+  { en: 'We love you, Oppy. ♥', vi: 'Chúng tôi thương bạn lắm, Oppy. ♥' },
+  { en: 'Good morning, Oppy! Time to wake up.', vi: 'Chào buổi sáng, Oppy! Dậy thôi nào.' },
+  { en: 'Just one little beep... please?', vi: 'Chỉ một tiếng bíp nhỏ thôi... nhé?' },
+  { en: 'Your team is still here.', vi: 'Cả đội vẫn ở đây chờ bạn.' },
+  { en: 'We are listening, every single day.', vi: 'Ngày nào chúng tôi cũng lắng nghe.' },
+  { en: 'We will wait for you, as long as it takes.', vi: 'Chúng tôi sẽ chờ bạn, bao lâu cũng được.' },
+  { en: 'Are you okay out there?', vi: 'Ngoài đó bạn có ổn không?' },
 ];
 
 // Where the little rover marker sits on the crater map (chapter 6), in % of the stage.

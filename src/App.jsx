@@ -176,7 +176,13 @@ export default function App() {
     };
     if (settings.narrate && narratorRef.current.supported) {
       // `slow: 0.8` on a beat reads that line more slowly (e.g. Oppy falling asleep)
-      narratorRef.current.speak(l.say || l.en, { rate: settings.rate * (l.slow || 1), voiceURI: settings.voiceURI, onEnd: done });
+      // `narrator: true`: the storyteller reads it, in another voice
+      narratorRef.current.speak(l.say || l.en, {
+        rate: settings.rate * (l.slow || 1),
+        voiceURI: settings.voiceURI,
+        role: l.narrator ? 'narrator' : 'oppy',
+        onEnd: done,
+      });
     } else {
       narratorRef.current.stop();
       if (settings.auto) autoTimer.current = setTimeout(done, readingMs(l.en));
@@ -240,6 +246,11 @@ export default function App() {
     if (!revealed) return;
     if (gate?.tap === 'rover' || (canAdvance && !exploreItems)) {
       advance();
+      return;
+    }
+    // asleep (the long sleep, the finale): no beeps, just a sleepy "Zzz"
+    if (frame.rover.mood === 'sleep') {
+      setBubble({ id: Date.now(), text: 'Zzz…' });
       return;
     }
     sound.sfx.robot();
@@ -439,7 +450,7 @@ export default function App() {
             bubble={bubble}
             hold={holdRover}
             onGameDone={() => setGameDoneAt(index)}
-            talking={narrator.speaking}
+            talking={narrator.speaking && !line?.narrator}
             auto={settings.auto}
           />
           <Hud
@@ -465,6 +476,7 @@ export default function App() {
             onBack={back}
             onReplay={() => !countdownPending && sayLine(line)}
             side={frame.beat.subsBox === 'side'}
+            narratorLine={!!line?.narrator}
           />
           {chapterCard != null && <ChapterCard chapter={chapters[chapterCard]} number={chapterCard + 1} onSkip={skipWait} />}
         </>

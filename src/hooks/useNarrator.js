@@ -4,6 +4,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // with the voices installed on the computer. Edge has the most natural voices
 // ("Microsoft Aria/Jenny Online (Natural)").
 const PREFERRED = [/aria/i, /jenny/i, /ana\b/i, /natural/i, /google us english/i, /samantha/i, /zira/i, /guy/i, /david/i];
+// The storyteller (beats with narrator: true) uses a different voice than Oppy, so you can hear
+// that someone else is telling the story. If only one voice is installed: same voice, lower pitch.
+const NARRATOR_PREFERRED = [/guy/i, /andrew/i, /christopher/i, /brian/i, /eric/i, /davis/i, /roger/i, /steffan/i, /ryan/i, /thomas/i, /emma/i, /ava\b/i, /michelle/i, /sonia/i, /natural/i, /google uk english/i, /david/i, /mark/i];
+const PITCH = { oppy: 1.08, narrator: 1.0, narratorSameVoice: 0.86 };
 
 // Split into sentences without breaking decimals like "42.195".
 export function splitSentences(text) {
@@ -57,6 +61,19 @@ export function useNarrator() {
     [voices],
   );
 
+  // a natural English voice that is not Oppy's voice (null if there is none)
+  const pickNarratorVoice = useCallback(
+    (oppyVoice) => {
+      const english = voices.filter((v) => /^en[-_]/i.test(v.lang) && v !== oppyVoice && v.voiceURI !== oppyVoice?.voiceURI);
+      for (const re of NARRATOR_PREFERRED) {
+        const v = english.find((x) => re.test(x.name));
+        if (v) return v;
+      }
+      return null;
+    },
+    [voices],
+  );
+
   const stop = useCallback(() => {
     token.current += 1;
     clearTimeout(timer.current);
@@ -66,7 +83,8 @@ export function useNarrator() {
   }, [supported, synth]);
 
   const speak = useCallback(
-    (text, { rate = 1, voiceURI, onEnd } = {}) => {
+    // role: 'oppy' (default) or 'narrator' (the storyteller, another voice)
+    (text, { rate = 1, voiceURI, onEnd, role = 'oppy' } = {}) => {
       token.current += 1;
       const my = token.current;
       clearTimeout(timer.current);
@@ -76,7 +94,10 @@ export function useNarrator() {
       }
       synth.cancel();
       const parts = splitSentences(text);
-      const voice = pickVoice(voiceURI);
+      const oppyVoice = pickVoice(voiceURI);
+      const other = role === 'narrator' ? pickNarratorVoice(oppyVoice) : null;
+      const voice = other || oppyVoice;
+      const pitch = role !== 'narrator' ? PITCH.oppy : other ? PITCH.narrator : PITCH.narratorSameVoice;
       setSpeaking(true);
       setProgress(0);
       // Chrome sometimes drops an utterance queued right after cancel(); wait a beat.
@@ -107,7 +128,7 @@ export function useNarrator() {
             u.lang = 'en-US';
           }
           u.rate = rate;
-          u.pitch = 1.08;
+          u.pitch = pitch;
           u.onstart = () => {
             if (my === token.current) setProgress((p) => Math.max(p, start));
           };
@@ -121,7 +142,7 @@ export function useNarrator() {
         });
       }, 90);
     },
-    [supported, synth, pickVoice],
+    [supported, synth, pickVoice, pickNarratorVoice],
   );
 
   useEffect(() => () => supported && synth.cancel(), [supported, synth]);

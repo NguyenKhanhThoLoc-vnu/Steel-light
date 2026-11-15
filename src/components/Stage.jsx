@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Rover from '../art/Rover.jsx';
 import { SCENES } from '../art/Scenes.jsx';
 import * as Art from '../art/Objects.jsx';
-import { MAP_POINTS } from '../data/story.js';
+import { CALL_MESSAGES, MAP_POINTS } from '../data/story.js';
 import { photos } from '../data/photos.js';
 import { ENTRY, roverPos, useRoverDrive } from '../hooks/useRoverDrive.js';
 import CruiseGame from './CruiseGame.jsx';
@@ -529,7 +529,14 @@ export default function Stage({
           {CALLS.map((i) => (
             <i key={i} style={{ left: `${18 + i * 4}%`, animationDelay: `${i * 0.7}s` }} />
           ))}
-          <span className="calls-label">Opportunity, can you hear us?</span>
+          {/* messages from Earth: 6 places around Oppy, 2 messages take turns in each (16 s loop) */}
+          {CALL_MESSAGES.map((m, i) => (
+            <p key={m.en} className={`call-msg s${i % 6}`} style={{ animationDelay: `${(i % 6) * 1.3 + (i >= 6 ? 8 : 0)}s` }}>
+              <span className="call-from">📡 Earth · Trái Đất</span>
+              <b>{m.en}</b>
+              <small>{m.vi}</small>
+            </p>
+          ))}
         </div>
       )}
 

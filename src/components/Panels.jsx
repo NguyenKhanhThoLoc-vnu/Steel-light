@@ -103,6 +103,7 @@ export function SubtitleBox({
   onBack,
   onReplay,
   side = false,
+  narratorLine = false,
 }) {
   const showEn = subs === 'both' || subs === 'en';
   const showVi = subs === 'both' || subs === 'vi';
@@ -112,16 +113,28 @@ export function SubtitleBox({
   return (
     // side: a small chat bubble in the bottom-left corner (beat field subsBox: 'side')
     <section ref={boxRef} className={`subs subs-${subs}${side ? ' is-side' : ''}`} aria-live="polite">
-      <span className="nameplate">
-        <svg viewBox="0 0 40 24" aria-hidden="true">
-          <rect x="2" y="2" width="36" height="20" rx="8" fill="#eef0fa" />
-          <circle cx="13" cy="12" r="5" fill="#2b2f45" />
-          <circle cx="27" cy="12" r="5" fill="#2b2f45" />
-          <circle cx="11.5" cy="10.5" r="1.6" fill="#fff" />
-          <circle cx="25.5" cy="10.5" r="1.6" fill="#fff" />
-        </svg>
-        OPPY
-      </span>
+      {narratorLine ? (
+        // beats with narrator: true are told by a storyteller (Oppy is asleep)
+        <span className="nameplate is-narrator">
+          <svg viewBox="0 0 40 24" aria-hidden="true">
+            <path d="M20 6c-4-2.6-9-3-14-2v15c5-1 10-.6 14 2 4-2.6 9-3 14-2V4c-5-1-10-.6-14 2z" fill="#f3ecff" />
+            <path d="M20 6v15" stroke="#7a5fc9" strokeWidth="1.6" />
+            <path d="M9 9h7M9 12.5h7M24 9h7M24 12.5h7" stroke="#b9a6ec" strokeWidth="1.3" strokeLinecap="round" />
+          </svg>
+          NARRATOR <small>· Người kể chuyện</small>
+        </span>
+      ) : (
+        <span className="nameplate">
+          <svg viewBox="0 0 40 24" aria-hidden="true">
+            <rect x="2" y="2" width="36" height="20" rx="8" fill="#eef0fa" />
+            <circle cx="13" cy="12" r="5" fill="#2b2f45" />
+            <circle cx="27" cy="12" r="5" fill="#2b2f45" />
+            <circle cx="11.5" cy="10.5" r="1.6" fill="#fff" />
+            <circle cx="25.5" cy="10.5" r="1.6" fill="#fff" />
+          </svg>
+          OPPY
+        </span>
+      )}
       <div className="subs-body">
         {!revealed ? (
           <div className="typing" aria-label="Oppy is moving">
