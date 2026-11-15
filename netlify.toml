@@ -1,0 +1,7 @@
+# Netlify build settings (these override the settings typed in the Netlify website)
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
