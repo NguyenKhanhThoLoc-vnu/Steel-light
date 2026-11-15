@@ -289,9 +289,9 @@ export function SettingsPanel({ narrator, settings, setSettings, onClose }) {
               🔊 Test voice · Nghe thử
             </button>
             <p className="tip">
-              Tip: Microsoft Edge has the most natural English voices (e.g. "Aria" or "Jenny Online (Natural)").
+              Tip: Microsoft Edge has the most natural English voices. Oppy's own voice is "Ana Online (Natural)".
               <br />
-              Mẹo: Edge có giọng tiếng Anh tự nhiên nhất.
+              Mẹo: Edge có giọng tiếng Anh tự nhiên nhất. Giọng của Oppy là "Ana Online (Natural)".
             </p>
           </>
         )}

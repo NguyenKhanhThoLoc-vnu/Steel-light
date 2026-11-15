@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Built-in browser text-to-speech (Web Speech API). Free, no API key, works offline
-// with the voices installed on the computer. Edge has the most natural voices
-// ("Microsoft Aria/Jenny Online (Natural)").
-const PREFERRED = [/aria/i, /jenny/i, /ana\b/i, /natural/i, /google us english/i, /samantha/i, /zira/i, /guy/i, /david/i];
+// with the voices installed on the computer. Edge has the most natural voices.
+// Oppy's voice: "Microsoft Ana Online (Natural)", a child's voice (chosen by the team, sample 05).
+// If Ana is missing (e.g. Chrome or offline), the next voice in this list is used.
+const PREFERRED = [/\bana\b/i, /aria/i, /jenny/i, /natural/i, /google us english/i, /samantha/i, /zira/i, /guy/i, /david/i];
+// child voices are already high: read them at their own pitch (as in the sample)
+const CHILD_VOICE = /\b(ana|maisie)\b/i;
 // The storyteller (beats with narrator: true) uses a different voice than Oppy, so you can hear
 // that someone else is telling the story. If only one voice is installed: same voice, lower pitch.
 const NARRATOR_PREFERRED = [/guy/i, /andrew/i, /christopher/i, /brian/i, /eric/i, /davis/i, /roger/i, /steffan/i, /ryan/i, /thomas/i, /emma/i, /ava\b/i, /michelle/i, /sonia/i, /natural/i, /google uk english/i, /david/i, /mark/i];
-const PITCH = { oppy: 1.08, narrator: 1.0, narratorSameVoice: 0.86 };
+const PITCH = { oppy: 1.08, oppyChild: 1.0, narrator: 1.0, narratorSameVoice: 0.86 };
 
 // Split into sentences without breaking decimals like "42.195".
 export function splitSentences(text) {
@@ -51,12 +54,14 @@ export function useNarrator() {
         const chosen = voices.find((v) => v.voiceURI === uri);
         if (chosen) return chosen;
       }
-      const us = voices.filter((v) => /en[-_]US/i.test(v.lang));
+      // only English voices (so /ana/ can never pick e.g. a Portuguese "Luciana")
+      const english = voices.filter((v) => /^en[-_]/i.test(v.lang));
+      const us = english.filter((v) => /en[-_]US/i.test(v.lang));
       for (const re of PREFERRED) {
-        const v = us.find((x) => re.test(x.name)) || voices.find((x) => re.test(x.name));
+        const v = us.find((x) => re.test(x.name)) || english.find((x) => re.test(x.name));
         if (v) return v;
       }
-      return us[0] || voices[0] || null;
+      return us[0] || english[0] || voices[0] || null;
     },
     [voices],
   );
@@ -97,7 +102,8 @@ export function useNarrator() {
       const oppyVoice = pickVoice(voiceURI);
       const other = role === 'narrator' ? pickNarratorVoice(oppyVoice) : null;
       const voice = other || oppyVoice;
-      const pitch = role !== 'narrator' ? PITCH.oppy : other ? PITCH.narrator : PITCH.narratorSameVoice;
+      const oppyPitch = CHILD_VOICE.test(voice?.name || '') ? PITCH.oppyChild : PITCH.oppy;
+      const pitch = role !== 'narrator' ? oppyPitch : other ? PITCH.narrator : PITCH.narratorSameVoice;
       setSpeaking(true);
       setProgress(0);
       // Chrome sometimes drops an utterance queued right after cancel(); wait a beat.
