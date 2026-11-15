@@ -491,6 +491,9 @@ export default function App() {
         <SettingsPanel narrator={narrator} settings={settings} setSettings={setSettings} onClose={() => setSettingsOpen(false)} />
       )}
       {lightbox && <Lightbox photoKey={lightbox} onClose={() => setLightbox(null)} />}
+
+      {/* Space Apps rule: AI-generated images must carry a visible label (real NASA photos are not AI) */}
+      <p className="ai-mark">Illustrations: AI-generated</p>
     </div>
   );
 }

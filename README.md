@@ -38,7 +38,7 @@ Then open http://localhost:5173 (the browser usually opens by itself) and click 
 
 ```
 oppy-tale/
-├─ public/images/   NASA photos and style references
+├─ public/images/   NASA photos
 └─ src/
    ├─ data/         the story script (story.js) and photo credits (photos.js)
    ├─ components/   stage, subtitles, mini-games, first-person scenes
@@ -48,6 +48,17 @@ oppy-tale/
 ```
 
 To change the story text, edit `src/data/story.js`.
+
+## AI disclosure
+
+This project was built with the help of Claude (Anthropic), an AI assistant.
+
+- **Code:** the React/Vite source code was written with Claude, then reviewed and tested by our team.
+- **Text:** the English narration and Vietnamese subtitles were drafted with Claude from our team's notes and checked against NASA sources.
+- **Images:** the cartoon illustrations (the rover, scenes and objects) are SVG drawings produced by AI-written code, and are labeled "Illustrations: AI-generated" on screen. The real photos are unedited NASA images.
+- **Audio:** the background music and sound effects are synthesized in the browser by AI-written code (Web Audio API). The narration uses the browser's built-in text-to-speech voices.
+
+No NASA logos, flags or mission insignia are used in any AI-generated content.
 
 ## Credits
 

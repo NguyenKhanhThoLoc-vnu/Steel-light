@@ -1409,7 +1409,7 @@ button.obj {
   transform-origin: center;
   transition: transform 0.32s ease-in-out;
 }
-/* keep "MER-B" readable when Oppy turns around */
+/* keep the name on the body readable when Oppy turns around */
 .face-left .rover .body-label {
   transform: scaleX(-1);
 }
@@ -2838,6 +2838,30 @@ button.obj {
   margin-top: 22px;
 }
 
+/* visible "AI-generated" label (Space Apps rule), in the thin strip under the subtitles */
+.ai-mark {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  z-index: 45; /* above the stage, subtitles and chapter card; below menus and the photo viewer */
+  margin: 0;
+  padding: 0 6px;
+  border-radius: 6px 6px 0 0;
+  background: rgba(11, 16, 48, 0.55);
+  color: rgba(255, 255, 255, 0.85);
+  font: 700 10px/12px 'Nunito', sans-serif;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 760px) {
+  .ai-mark {
+    right: 8px;
+    font-size: 9px;
+    line-height: 10px;
+  }
+}
+
 /* ── responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 760px) {
   :root {
@@ -2893,7 +2917,7 @@ button.obj {
   }
   .subs {
     width: calc(100% - 16px);
-    bottom: max(8px, env(safe-area-inset-bottom));
+    bottom: max(11px, env(safe-area-inset-bottom)); /* leaves room for the .ai-mark strip */
     padding: 18px 14px 8px;
     border-radius: 18px;
   }

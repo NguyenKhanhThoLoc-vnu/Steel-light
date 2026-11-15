@@ -172,7 +172,7 @@ export default function Rover({
         <rect x="80" y="150" width="148" height="48" rx="11" fill={`url(#${uid}-body)`} className="body" />
         <rect x="80" y="186" width="148" height="12" rx="6" className="body-shade" />
         <rect x="100" y="162" width="52" height="16" rx="5" className="body-plate" />
-        <text x="126" y="174" className="body-label">{variant === 'twin' ? 'MER-A' : 'MER-B'}</text>
+        <text x="126" y="174" className="body-label">{variant === 'twin' ? 'SPIRIT' : 'OPPY'}</text>
         <circle cx="178" cy="170" r="4" className="bolt" />
         <circle cx="194" cy="170" r="4" className="bolt" />
         <circle cx="210" cy="170" r="4" className="bolt" />
